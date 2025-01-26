@@ -5,7 +5,7 @@ LIB_DIR				=	libft
 NAME				=	fractol
 
 CC					=	gcc
-CFLAGS				=	-Wall -Wextra -Werror -I$(HDIR)
+CFLAGS				=	-Wall -Wextra -O3 -fopenmp -I$(HDIR)
 
 VPATH				=	$(SDIR):$(HDIR)
 
@@ -29,7 +29,7 @@ MINILIBX			=	$(MINILIBX_DIR)/$(MINILIBX_FILE)
 CFLAGS				+=	-I$(MINILIBX_DIR) 
 LIB					+=	$(MINILIBX)	
 
-SRCS				=	main.c panic.c event.c init.c
+SRCS				=	main.c event.c init.c utils.c fractols.c render.c palettes.c
 OBJS				:=	$(patsubst %.c, $(ODIR)/%.o, $(SRCS))
 
 DIRS				=	$(ODIR)
@@ -37,7 +37,7 @@ DIRS				=	$(ODIR)
 all: $(NAME)
 
 $(NAME): $(LIB) $(OBJS) 
-	$(CC) $(CFLAGS) $(OBJS) $(LIB) -o $@ -L$(MLX_PATH) -lmlx -lX11 -lXext
+	$(CC) $(CFLAGS) $(OBJS) $(LIB) -o $@ -L$(MLX_PATH) -lmlx -lX11 -lXext -lm
 
 $(ODIR)/%.o: %.c | $(DIRS)
 	$(CC) $(CFLAGS) -c -o $@ $<
