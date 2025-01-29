@@ -6,22 +6,11 @@
 /*   By: dmelnyk <dmelnyk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 14:16:41 by dmelnyk           #+#    #+#             */
-/*   Updated: 2025/01/26 15:11:11 by dmelnyk          ###   ########.fr       */
+/*   Updated: 2025/01/29 14:23:04 by dmelnyk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/fractol.h"
-#include <math.h>
-
-double get_smooth_value(int iterations, double z_real, double z_imag, int max_iterations)
-{
-	if (iterations == max_iterations)
-		return 0.0;
-
-	double log_zn = log(z_real * z_real + z_imag * z_imag) / 2.0;
-	double nu = log(log_zn / log(2.0)) / log(2.0);
-	return (iterations + 1 - nu);
-}
 
 void	free_everything(t_mlx_data *data)
 {
@@ -36,20 +25,35 @@ void	free_everything(t_mlx_data *data)
 	}
 }
 
-void	reset_data(t_mlx_data *data)
+void	reset_data(t_fractal *fr)
 {
-	data->fr->color = DEFAULT_COLOR;
-	data->fr->cx = -0.75;
-	data->fr->cy = 0;
-	data->fr->iterations = 50;
-	data->fr->scale = 2;
-	data->fr->width = WINDOW_WIDTH;
-	data->fr->height = WINDOW_HEIGHT;
+	fr->iterations = 100;
+	if (fr->type == MANDLEBROT)
+		fr->shift_x = -0.75;
+	else
+		fr->shift_x = 0;
+	fr->shift_y = 0;
+	fr->scale = 1;
+	fr->julia_x = -0.4;
+	fr->julia_y = -0.59;
+	fr->julia_lock = 0;
+	if (fr->type == BURNING_SHIP)
+	{
+		fr->scale = 0.026;
+		fr->shift_x = -1.75;
+		fr->shift_y = 0.039;
+	}
 }
 
 int	encode_rgb(unsigned char red, unsigned char green, unsigned char blue)
 {
 	return (red << 16 | green << 8 | blue);
+}
+
+// [0...799] -> [-2, 2] maps value
+double	map(double unscaled, double new_min, double new_max, double old_max)
+{
+	return ((new_max - new_min) * (unscaled - 0) / (old_max - 0) + new_min);
 }
 
 void	my_pixel_put(t_img *img, int x, int y, int color)

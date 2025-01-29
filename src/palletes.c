@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   palettes.c                                         :+:      :+:    :+:   */
+/*   palletes.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dmelnyk <dmelnyk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/26 13:10:11 by dmelnyk           #+#    #+#             */
-/*   Updated: 2025/01/26 13:25:01 by dmelnyk          ###   ########.fr       */
+/*   Created: 2025/01/29 14:09:04 by dmelnyk           #+#    #+#             */
+/*   Updated: 2025/01/29 16:30:29 by dmelnyk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	fire_color(double smooth_value, int max_iterations)
 			t * 255,
 			t * t * 255,
 			t * t * t * 255));
+
 }
 
 int	smooth_color(double smooth_value, int max_iterations)

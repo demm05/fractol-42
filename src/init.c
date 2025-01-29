@@ -6,7 +6,7 @@
 /*   By: dmelnyk <dmelnyk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 19:43:16 by dmelnyk           #+#    #+#             */
-/*   Updated: 2025/01/26 14:42:32 by dmelnyk          ###   ########.fr       */
+/*   Updated: 2025/01/28 19:36:52 by dmelnyk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,18 @@
 #include "../inc/utils.h"
 
 static int	init_mlx(t_mlx_data *data);
-static int	parse_argv(t_mlx_data *data, int argc, char *argv[]);
+static int	parse_argv(t_fractal *fr, int argc, char *argv[]);
 static void	print_help_message(void);
 
 int	init_data(t_mlx_data *data, int argc, char *argv[])
 {
-	if (parse_argv(data, argc, argv))
+	if (parse_argv(data->fr, argc, argv))
 	{
 		print_help_message();
 		return (1);
 	}
 	if (init_mlx(data))
 		return (1);
-	reset_data(data);
-	data->fr->pallet = 0;
 	return (0);
 }
 
@@ -36,7 +34,7 @@ static inline int	set_fractol_type(char *str, enum e_type *type)
 	int	len;
 
 	len = ft_strlen(str);
-	if (!ft_strncmp("mandlebrot", str, len))
+	if (!ft_strncmp("mandelbrot", str, len))
 		*type = MANDLEBROT;
 	else if (!ft_strncmp("julia", str, len))
 		*type = JULIA;
@@ -47,12 +45,20 @@ static inline int	set_fractol_type(char *str, enum e_type *type)
 	return (0);
 }
 
-static int	parse_argv(t_mlx_data *data, int argc, char *argv[])
+static int	parse_argv(t_fractal *fr, int argc, char *argv[])
 {
 	if (argc < 2)
 		return (1);
-	if (set_fractol_type(argv[1], &data->fr->type))
+	if (set_fractol_type(argv[1], &fr->type))
 		return (1);
+	reset_data(fr);
+	if (fr->type == JULIA)
+	{
+		if (argc != 4)
+			return (1);
+		fr->julia_x = ft_atod(argv[2]);
+		fr->julia_y = ft_atod(argv[3]);
+	}
 	return (0);
 }
 
@@ -63,14 +69,14 @@ static int	init_mlx(t_mlx_data *data)
 	data->mlx = mlx_init();
 	if (!data->mlx)
 		return (1);
-	data->win = mlx_new_window(data->mlx, WINDOW_WIDTH, \
-								WINDOW_HEIGHT, "Fractol 42");
+	data->win = mlx_new_window(data->mlx, WIDTH, \
+								HEIGHT, "Fractol 42");
 	if (!data->win)
 	{
 		free_everything(data);
 		return (1);
 	}
-	data->img->img = mlx_new_image(data->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
+	data->img->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
 	if (!data->img->img)
 	{
 		free_everything(data);
@@ -85,12 +91,13 @@ static void	print_help_message(void)
 {
 	ft_printf("+-----------------Let me help you-----------------+\n");
 	ft_printf("|                                                 |\n");
-	ft_printf("|Usage: ./fractol [sets]                          |\n");
+	ft_printf("|Usage: ./fractol [sets] [julia]                  |\n");
 	ft_printf("|                                                 |\n");
 	ft_printf("|e.g: ./fratol mandlebrot                         |\n");
 	ft_printf("|                                                 |\n");
 	ft_printf("|Options:                                         |\n");
-	ft_printf("|  sets:      [julia, mandlebrot, ship]           |\n");
+	ft_printf("|  sets:    [mandlebrot, julia, ship]             |\n");
+	ft_printf("|  julia:   [real_part, imag_part] for julia set  |\n");
 	ft_printf("|                                                 |\n");
 	ft_printf("|--------------------Keyboard---------------------|\n");
 	ft_printf("|                                                 |\n");
@@ -98,7 +105,9 @@ static void	print_help_message(void)
 	ft_printf("|Press [1-2] to move to another fractal           |\n");
 	ft_printf("|Press [0] to reset the fractal                   |\n");
 	ft_printf("|Press [wasd] or arrow keys to move fractal       |\n");
-	ft_printf("|Press [hl] to change color mapping               |\n");
+	ft_printf("|Press [l] to lock julia set                      |\n");
+	ft_printf("|Press [qe] to change iterations for escape       |\n");
+	ft_printf("|Press [jk] to zoom                               |\n");
 	ft_printf("|Use mouse scroll to zoom in and out              |\n");
 	ft_printf("|                                                 |\n");
 	ft_printf("+-------------------------------------------------+\n");

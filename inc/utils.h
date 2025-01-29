@@ -13,12 +13,13 @@
 #ifndef UTILS_H
 # define UTILS_H 
 
-#include "fractol.h"
+# include "fractol.h"
 
 void	free_everything(t_mlx_data *data);
-void	reset_data(t_mlx_data *data);
+void	reset_data(t_fractal *fr);
 int		init_data(t_mlx_data *data, int argc, char *argv[]);
 void	my_pixel_put(t_img *img, int x, int y, int color);
 int		encode_rgb(unsigned char red, unsigned char green, unsigned char blue);
+double	map(double unscaled, double new_min, double new_max, double old_max);
 
 #endif

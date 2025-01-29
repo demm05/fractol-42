@@ -5,68 +5,86 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dmelnyk <dmelnyk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/25 17:10:53 by dmelnyk           #+#    #+#             */
-/*   Updated: 2025/01/26 15:16:48 by dmelnyk          ###   ########.fr       */
+/*   Created: 2025/01/28 18:38:07 by dmelnyk           #+#    #+#             */
+/*   Updated: 2025/01/29 17:36:19 by dmelnyk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/render.h"
+#include "../inc/fractol.h"
+#include "../inc/utils.h"
 #include <math.h>
 
 double	calc_mandlebrot(t_fractal *fr, t_complex *c)
 {
 	t_complex	z;
-	double		temp;
+	t_complex	sq;
 	int			i;
 
 	i = -1;
 	z.real = 0;
 	z.imag = 0;
-	while (++i < fr->iterations && (z.real * z.real + z.imag * z.imag) < 4)
+	sq.real = 0;
+	sq.imag = 0;
+	while (++i < fr->iterations)
 	{
-		temp = z.real * z.real - z.imag * z.imag + c->real;
-		z.imag = 2 * z.real * z.imag + c->imag;
-		z.real = temp;
+		sq.real = z.real * z.real;
+		sq.imag = z.imag * z.imag;
+		if (sq.imag * sq.real > 4)
+			break ;
+		z.imag = 2.0 * z.real * z.imag + c->imag;
+		z.real = sq.real - sq.imag + c->real;
 	}
-	return (get_smooth_value(i, z.real, z.imag, fr->iterations));
+	if (i == fr->iterations)
+		return (0);
+	return (log(log(sq.real + sq.imag) / log(2.0)) / 2.0 + 1 + i);
 }
 
-double	calc_julia(t_fractal *fr, t_complex *zz)
+double	calc_julia(t_fractal *fr, t_complex z)
 {
-	t_complex	z;
 	t_complex	c;
-	double		temp;
+	t_complex	sq;
 	int			i;
 
-	z = *zz;
 	i = -1;
-	c.real = -0.7;
-	c.imag = 0.27015;
-	while (++i < fr->iterations && (z.real * z.real + z.imag * z.imag) < 4)
+	sq.real = 0;
+	sq.imag = 0;
+	c.real = fr->julia_x;
+	c.imag = fr->julia_y;
+	while (++i < fr->iterations)
 	{
-		temp = z.real * z.real - z.imag * z.imag + c.real;
-		z.imag = 2 * z.real * z.imag + c.imag;
-		z.real = temp;
+		sq.real = z.real * z.real;
+		sq.imag = z.imag * z.imag;
+		if (sq.imag * sq.real > 4)
+			break ;
+		z.imag = 2.0 * z.real * z.imag + c.imag;
+		z.real = sq.real - sq.imag + c.real;
 	}
-	return (get_smooth_value(i, z.real, z.imag, fr->iterations));
+	if (i == fr->iterations)
+		return (0);
+	return (log(log(sq.real + sq.imag) / log(2.0)) / 2.0 + 1 + i);
 }
 
 double	calc_ship(t_fractal *fr, t_complex *c)
 {
 	t_complex	z;
-	t_complex	temp;
+	t_complex	sq;
 	int			i;
 
 	i = -1;
+	sq.real = 0;
+	sq.imag = 0;
 	z.real = 0;
 	z.imag = 0;
-	while (++i < fr->iterations && (z.real * z.real + z.imag * z.imag) < 4)
+	while (++i < fr->iterations)
 	{
-		temp.real = fabs(z.real);
-		temp.imag = fabs(z.imag);
-
-		z.real = temp.real * temp.real - temp.imag * temp.imag + c->real;
-		z.imag = 2.0 * temp.real * temp.imag + c->imag;
+		sq.real = z.real * z.real;
+		sq.imag = z.imag * z.imag;
+		if (sq.imag * sq.real > 4)
+			break ;
+		z.imag = fabs(2.0 * z.real * z.imag) - c->imag;
+		z.real = sq.real - sq.imag + c->real;
 	}
-	return (get_smooth_value(i, z.real, z.imag, fr->iterations));
+	if (i == fr->iterations)
+		return (0);
+	return (log(log(sq.real + sq.imag) / log(2.0)) / 2.0 + 1 + i);
 }
