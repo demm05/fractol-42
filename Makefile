@@ -29,7 +29,7 @@ MINILIBX			=	$(MINILIBX_DIR)/$(MINILIBX_FILE)
 CFLAGS				+=	-I$(MINILIBX_DIR) 
 LIB					+=	$(MINILIBX)	
 
-SRCS				=	main.c event.c init.c utils.c fractols.c palletes.c render.c keyboard.c
+SRCS				=	main.c event.c init.c utils.c fractols.c palletes.c palletes2.c render.c keyboard.c
 SRCS				+=	thread.c	
 OBJS				:=	$(patsubst %.c, $(ODIR)/%.o, $(SRCS))
 

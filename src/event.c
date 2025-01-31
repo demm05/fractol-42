@@ -35,7 +35,7 @@ int	mouse_event(int key, int x, int y, t_mlx_data *data)
 	if (key != 4 && key != 5)
 		return (0);
 	map_x = map(x, -2, 2, WIDTH - 1);
-	map_y = map(y, 2, -2, HEIGHT - 1);
+	map_y = map(y, -2, 2, HEIGHT - 1);
 	old_scale = data->fr->scale;
 	scale(data->fr, key - 4);
 	data->fr->shift_x += map_x * old_scale - map_x * data->fr->scale;
@@ -49,7 +49,7 @@ int	mouse_move_event(int x, int y, t_mlx_data *data)
 	if (data->fr->type != JULIA || data->fr->julia_lock)
 		return (0);
 	data->fr->julia_x = map(x, -2, 2, WIDTH - 1) * data->fr->scale;
-	data->fr->julia_y = map(y, 2, -2, HEIGHT - 1) * data->fr->scale;
+	data->fr->julia_y = map(y, -2, 2, HEIGHT - 1) * data->fr->scale;
 	data->draw(data);
 	return (0);
 }

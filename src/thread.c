@@ -51,4 +51,3 @@ void	render(t_mlx_data *data)
 		pthread_join(r->threads[i], NULL);
 	mlx_put_image_to_window(data->mlx, data->win, data->img->img, 0, 0);
 }
-

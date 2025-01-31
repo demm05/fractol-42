@@ -6,7 +6,7 @@
 /*   By: dmelnyk <dmelnyk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 19:43:16 by dmelnyk           #+#    #+#             */
-/*   Updated: 2025/01/28 19:36:52 by dmelnyk          ###   ########.fr       */
+/*   Updated: 2025/01/31 19:50:38 by dmelnyk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,16 @@ static inline int	set_fractol_type(char *str, enum e_type *type)
 	int	len;
 
 	len = ft_strlen(str);
-	if (!ft_strncmp("mandelbrot", str, len))
+	if (!ft_strncmp("mandlebrot", str, len))
 		*type = MANDLEBROT;
 	else if (!ft_strncmp("julia", str, len))
 		*type = JULIA;
 	else if (!ft_strncmp("ship", str, len))
 		*type = BURNING_SHIP;
+	else if (!ft_strncmp("spider", str, len))
+		*type = SPIDER;
+	else if (!ft_strncmp("tricorn", str, len))
+		*type = TRICORN;
 	else
 		return (1);
 	return (0);
@@ -59,6 +63,8 @@ static int	parse_argv(t_fractal *fr, int argc, char *argv[])
 		fr->julia_x = ft_atod(argv[2]);
 		fr->julia_y = ft_atod(argv[3]);
 	}
+	else if (argc > 2)
+		return (1);
 	return (0);
 }
 
@@ -89,26 +95,28 @@ static int	init_mlx(t_mlx_data *data)
 
 static void	print_help_message(void)
 {
-	ft_printf("+-----------------Let me help you-----------------+\n");
-	ft_printf("|                                                 |\n");
-	ft_printf("|Usage: ./fractol [sets] [julia]                  |\n");
-	ft_printf("|                                                 |\n");
-	ft_printf("|e.g: ./fratol mandlebrot                         |\n");
-	ft_printf("|                                                 |\n");
-	ft_printf("|Options:                                         |\n");
-	ft_printf("|  sets:    [mandlebrot, julia, ship]             |\n");
-	ft_printf("|  julia:   [real_part, imag_part] for julia set  |\n");
-	ft_printf("|                                                 |\n");
-	ft_printf("|--------------------Keyboard---------------------|\n");
-	ft_printf("|                                                 |\n");
-	ft_printf("|Press [ESC] to close window                      |\n");
-	ft_printf("|Press [1-2] to move to another fractal           |\n");
-	ft_printf("|Press [0] to reset the fractal                   |\n");
-	ft_printf("|Press [wasd] or arrow keys to move fractal       |\n");
-	ft_printf("|Press [l] to lock julia set                      |\n");
-	ft_printf("|Press [qe] to change iterations for escape       |\n");
-	ft_printf("|Press [jk] to zoom                               |\n");
-	ft_printf("|Use mouse scroll to zoom in and out              |\n");
-	ft_printf("|                                                 |\n");
-	ft_printf("+-------------------------------------------------+\n");
+	ft_printf("+-----------------Let me help you----------------------+\n");
+	ft_printf("|                                                      |\n");
+	ft_printf("|Usage: ./fractol [sets] [julia]                       |\n");
+	ft_printf("|                                                      |\n");
+	ft_printf("|Options:                                              |\n");
+	ft_printf("|  sets:    [mandlebrot, julia, ship, spider, tricorn] |\n");
+	ft_printf("|  julia:   [real_part, imag_part] for julia set       |\n");
+	ft_printf("|                                                      |\n");
+	ft_printf("|e.g: ./fratol julia 0.34 -0.05                        |\n");
+	ft_printf("|                                                      |\n");
+	ft_printf("|--------------------Keyboard--------------------------|\n");
+	ft_printf("|                                                      |\n");
+	ft_printf("|Press [ESC] to close window                           |\n");
+	ft_printf("|Press [1-2] to move to another fractal                |\n");
+	ft_printf("|Press [wasd] or arrow keys to move fractal            |\n");
+	ft_printf("|Press [l] to lock julia set                           |\n");
+	ft_printf("|Press [qe] to change iterations to escape             |\n");
+	ft_printf("|Press [jk] to zoom in/out                             |\n");
+	ft_printf("|Press [f] to change pallet                            |\n");
+	ft_printf("|Press [g] to color shift (only for some palletes)     |\n");
+	ft_printf("|Press [r] to reset the fractal                        |\n");
+	ft_printf("|Press [0] to set all fractal values to zero           |\n");
+	ft_printf("|          then pres [r] to set some values to default |\n");
+	ft_printf("+------------------------------------------------------+\n");
 }

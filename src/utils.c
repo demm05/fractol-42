@@ -6,7 +6,7 @@
 /*   By: dmelnyk <dmelnyk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 14:16:41 by dmelnyk           #+#    #+#             */
-/*   Updated: 2025/01/29 14:23:04 by dmelnyk          ###   ########.fr       */
+/*   Updated: 2025/01/31 15:44:08 by dmelnyk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,21 +27,19 @@ void	free_everything(t_mlx_data *data)
 
 void	reset_data(t_fractal *fr)
 {
-	fr->iterations = 100;
-	if (fr->type == MANDLEBROT)
-		fr->shift_x = -0.75;
-	else
-		fr->shift_x = 0;
+	fr->shift_x = 0;
 	fr->shift_y = 0;
 	fr->scale = 1;
 	fr->julia_x = -0.4;
 	fr->julia_y = -0.59;
-	fr->julia_lock = 0;
+	fr->julia_lock = 1;
+	if (fr->type == MANDLEBROT)
+		fr->shift_x = -0.75;
 	if (fr->type == BURNING_SHIP)
 	{
 		fr->scale = 0.026;
 		fr->shift_x = -1.75;
-		fr->shift_y = 0.039;
+		fr->shift_y = -0.039;
 	}
 }
 

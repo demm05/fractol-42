@@ -6,7 +6,7 @@
 /*   By: dmelnyk <dmelnyk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 13:01:53 by dmelnyk           #+#    #+#             */
-/*   Updated: 2025/01/29 18:15:53 by dmelnyk          ###   ########.fr       */
+/*   Updated: 2025/01/31 16:06:28 by dmelnyk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@ int	main(int argc, char *argv[])
 	t_img		img;
 	t_render	r;	
 
+	fr.iterations = 50;
+	fr.color_mode = SMOOTH;
+	fr.gradient_shift = 0;
 	data.fr = &fr;
 	data.img = &img;
 	data.r = &r;
